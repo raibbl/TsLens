@@ -2,6 +2,9 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 import fg from "fast-glob";
+import { exec as childProcessExec, exec } from "child_process";
+import * as fs from "fs";
+import * as path from "path";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -32,7 +35,32 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  const openFileCommand = vscode.commands.registerCommand(
+    "typescriptProgress.openFile",
+    (filePath: string) => {
+      if (!vscode.workspace.workspaceFolders) {
+        vscode.window.showErrorMessage("No workspace folder is open.");
+        return;
+      }
+
+      // Resolve the absolute file path
+      const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+      const absolutePath = vscode.Uri.file(`${workspaceFolder}/${filePath}`);
+
+      // Open the document
+      vscode.workspace.openTextDocument(absolutePath).then(
+        (document) => vscode.window.showTextDocument(document),
+        (error) => {
+          vscode.window.showErrorMessage(
+            `Unable to open file: ${filePath}. ${error.message}`
+          );
+        }
+      );
+    }
+  );
+
   context.subscriptions.push(disposable);
+  context.subscriptions.push(openFileCommand);
 }
 
 async function scanFiles(
@@ -62,9 +90,12 @@ class TypeScriptProgressProvider implements vscode.TreeDataProvider<TreeItem> {
   > = this._onDidChangeTreeData.event;
 
   private percentage: number = 0;
+  private mostChangedFiles: { file: string; changes: number }[] = [];
 
   constructor() {
     this.updatePercentage();
+
+    this.fetchMostChangedFiles();
 
     const watcher = vscode.workspace.createFileSystemWatcher(
       "**/*.{ts,tsx,js,jsx}",
@@ -88,20 +119,95 @@ class TypeScriptProgressProvider implements vscode.TreeDataProvider<TreeItem> {
     this._onDidChangeTreeData.fire();
   }
 
+  private async fetchMostChangedFiles(): Promise<void> {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    if (!workspaceFolders) return;
+
+    const workspacePath = workspaceFolders[0].uri.fsPath;
+
+    return new Promise<void>((resolve) => {
+      exec(
+        `git log --pretty=format: --name-only | grep -E '\\.js$|\\.jsx$' | sort | uniq -c | sort -nr`,
+        { cwd: workspacePath },
+        (error, stdout, stderr) => {
+          if (error) {
+            console.error("Error fetching Git history:", stderr);
+            resolve();
+            return;
+          }
+
+          console.log(stdout);
+          const filesWithChanges = stdout
+            .trim()
+            .split("\n")
+            .map((line) => {
+              const [changes, ...fileParts] = line.trim().split(/\s+/);
+              const file = fileParts.join(" ");
+              return { file, changes: parseInt(changes, 10) };
+            });
+
+          // Filter for existing files
+          this.mostChangedFiles = filesWithChanges.filter(({ file }) => {
+            const filePath = path.resolve(workspacePath, file);
+            return fs.existsSync(filePath);
+          });
+
+          resolve();
+        }
+      );
+    });
+  }
+
   getTreeItem(element: TreeItem): vscode.TreeItem {
     return element;
   }
 
   getChildren(): TreeItem[] {
-    return [
-      new TreeItem(`TypeScript Percentage: ${this.percentage.toFixed(2)}%`),
-    ];
+    const items: TreeItem[] = [];
+    // Add percentage
+    items.push(
+      new TreeItem(`TypeScript Percentage: ${this.percentage.toFixed(2)}%	`)
+    );
+    // Add most changed files
+    if (this.mostChangedFiles.length > 0) {
+      items.push(new TreeItem("Most Changed Files:"));
+
+      this.mostChangedFiles.forEach((file) => {
+        items.push(
+          (() => {
+            const treeItem = new TreeItem(
+              `${file.file} (${file.changes} changes)`,
+              vscode.TreeItemCollapsibleState.None
+            );
+            treeItem.command = {
+              command: "typescriptProgress.openFile",
+              title: "Open File",
+              arguments: [file.file],
+            };
+            return treeItem;
+          })()
+        );
+      });
+    } else {
+      items.push(
+        new TreeItem(
+          "No JavaScript files to refactor.",
+          vscode.TreeItemCollapsibleState.None
+        )
+      );
+    }
+
+    return items;
   }
 }
 
 class TreeItem extends vscode.TreeItem {
-  constructor(label: string) {
-    super(label, vscode.TreeItemCollapsibleState.None);
+  constructor(
+    label: string,
+    collapsibleState: vscode.TreeItemCollapsibleState = vscode
+      .TreeItemCollapsibleState.None
+  ) {
+    super(label, collapsibleState);
   }
 }
 

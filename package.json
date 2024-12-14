@@ -18,6 +18,10 @@
       {
         "command": "typescriptlens.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "typescriptProgress.openFile",
+        "title": "Open File"
       }
     ],
     "viewsContainers": {
