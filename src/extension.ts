@@ -65,6 +65,22 @@ class TypeScriptProgressProvider implements vscode.TreeDataProvider<TreeItem> {
 
   constructor() {
     this.updatePercentage();
+
+    const watcher = vscode.workspace.createFileSystemWatcher(
+      "**/*.{ts,tsx,js,jsx}",
+      false, // ignoreCreateEvents
+      false, // ignoreChangeEvents
+      false // ignoreDeleteEvents
+    );
+
+    watcher.onDidChange(() => this.updatePercentage());
+    watcher.onDidCreate(() => this.updatePercentage());
+    watcher.onDidDelete(() => this.updatePercentage());
+
+    // Clean up the watcher when the extension is deactivated
+    vscode.workspace.onDidChangeWorkspaceFolders(() => {
+      watcher.dispose();
+    });
   }
 
   private async updatePercentage() {
