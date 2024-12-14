@@ -19,7 +19,24 @@
         "command": "typescriptlens.helloWorld",
         "title": "Hello World"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "typescriptLensContainer",
+          "title": "TypescriptLens",
+          "icon": "$(file-code)"
+        }
+      ]
+    },
+    "views": {
+      "typescriptLensContainer": [
+        {
+          "id": "typescriptLensView",
+          "name": "TypeScript Progress"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
