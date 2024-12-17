@@ -16,8 +16,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "typescriptlens.helloWorld",
-        "title": "Hello World"
+        "command": "typescriptlens.precentage",
+        "title": "TypeScript precentage"
       },
       {
         "command": "typescriptProgress.openFile",
