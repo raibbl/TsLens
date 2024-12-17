@@ -1,71 +1,97 @@
-# typescriptlens README
+# TypescriptLens
 
-This is the README for your extension "typescriptlens". After writing up a brief description, we recommend including the following sections.
+**Track TypeScript progress and recommend files for refactoring!**
 
-## Features
-
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
-
-## Extension Settings
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+TypescriptLens is a Visual Studio Code extension designed to help you monitor your workspace's progress in transitioning to TypeScript and identify the most frequently changed JavaScript files that might benefit from refactoring.
 
 ---
 
-## Following extension guidelines
+## Features
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+### 1. TypeScript Progress
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+Displays the percentage of TypeScript files in your project compared to JavaScript files. Provides a quick way to track your progress in adopting TypeScript.
 
-## Working with Markdown
+![TypeScript Progress](../typescriptlens/resources/typescriptPrecentage.gif)
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+### 2. Most Changed Files
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+Lists the JavaScript files that are most frequently updated, based on Git history. Suggests files that might benefit from being refactored to TypeScript.
 
-## For more information
+### 3. Quick Navigation
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+Click on any file in the list to open it directly in the editor for review and refactoring.
 
-**Enjoy!**
+![VS Code Side Action](../typescriptlens/resources/SideBarAction.gif)
+
+### 4. Activity Bar Integration
+
+The extension is accessible via the Activity Bar, with an intuitive icon and collapsible sections for a cleaner UI.
+
+---
+
+## Installation
+
+1. Install the extension from the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com).
+2. Ensure Git is installed and accessible via your system's `PATH`.
+
+---
+
+## How to Use
+
+1. Open a workspace with JavaScript/TypeScript files.
+2. Go to the **TypescriptLens** section in the Activity Bar.
+3. View:
+   - **TypeScript Progress**: The percentage of TypeScript files.
+   - **Most Changed Files**: A list of JavaScript files sorted by change frequency.
+
+---
+
+## Requirements
+
+- **Git**: The extension uses Git logs to identify the most changed files.
+- **Node.js**: Required for building and running the extension.
+
+---
+
+## Extension Settings
+
+This extension does not currently add any custom settings. Future updates may include configurable options like:
+
+- Ignored files or directories.
+- Customizable sorting for the most changed files.
+
+---
+
+## Known Issues
+
+- The extension may not function correctly in projects without Git initialization.
+- Files outside the workspace folder are not included in the analysis.
+
+If you encounter any other issues, please report them on the [GitHub issues page](https://github.com/raibbl/TsLens).
+
+---
+
+## Release Notes
+
+### 0.0.1
+
+- Initial release of TypescriptLens.
+- Features:
+  - TypeScript progress tracking.
+  - Git-based most changed files list.
+  - File navigation via the extension view.
+
+---
+
+## Contributing
+
+Contributions are welcome! Check out the [GitHub repository](https://github.com/raibbl/TsLens) to report bugs, suggest features, or contribute code.
+
+---
+
+## Feedback and Support
+
+For questions or feedback, feel free to reach out through the [GitHub repository](https://github.com/raibbl/TsLens).
+
+**Enjoy a more organized migration to TypeScript!**
