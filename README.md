@@ -12,7 +12,7 @@ TypescriptLens is a Visual Studio Code extension designed to help you monitor yo
 
 Displays the percentage of TypeScript files in your project compared to JavaScript files. Provides a quick way to track your progress in adopting TypeScript.
 
-![TypeScript Progress](../typescriptlens/resources/typescriptPrecentage.gif)
+![TypeScript Progress](https://raw.githubusercontent.com/raibbl/TsLens/refs/heads/main/resources/typescriptPrecentage.gif)
 
 ### 2. Most Changed Files
 
@@ -22,7 +22,7 @@ Lists the JavaScript files that are most frequently updated, based on Git histor
 
 Click on any file in the list to open it directly in the editor for review and refactoring.
 
-![VS Code Side Action](../typescriptlens/resources/SideBarAction.gif)
+![VS Code Side Action](https://raw.githubusercontent.com/raibbl/TsLens/refs/heads/main/resources/SideBarAction.gif)
 
 ### 4. Activity Bar Integration
 
