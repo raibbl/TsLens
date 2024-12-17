@@ -2,15 +2,17 @@
   "name": "typescriptlens",
   "displayName": "TypescriptLens",
   "description": "Track typescript progress and reccomend files to convert",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.96.0"
   },
+  "publisher": "raibbl",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raibbl/tslens"
+  },
   "categories": [
     "Other"
-  ],
-  "activationEvents": [
-    "onCommand:typescriptlens.helloWorld"
   ],
   "main": "./out/extension.js",
   "contributes": {
