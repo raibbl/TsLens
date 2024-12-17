@@ -45,6 +45,10 @@ The extension is accessible via the Activity Bar, with an intuitive icon and col
    - **TypeScript Progress**: The percentage of TypeScript files.
    - **Most Changed Files**: A list of JavaScript files sorted by change frequency.
 
+4. Alternatively, use the Command Palette to view the TypeScript Progress:
+Open the Command Palette (Ctrl+Shift+P on Windows/Linux, Cmd+Shift+P on macOS).
+Run the command: TypeScript precentage.
+
 ---
 
 ## Requirements
